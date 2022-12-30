@@ -51,7 +51,7 @@
 - 출력 $(h_0, h_1, ... ,h_t, ...)$
 - 2개의 출력으로 분기되어 하나는 자기 자신에게 입력, 하나는 같은 것이 복제되어 순환
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/10ea5f2f-90a0-43cd-b5af-2e96bb1ae391/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/10ea5f2f-90a0-43cd-b5af-2e96bb1ae391/Untitled.png)
+![image1](./images/1.png)
 
 **2) 순환 구조** 
 
@@ -81,7 +81,7 @@ $$
 - 큰 시계열 데이터를 취급할 때, 적당한 길이로 끊음 → 작은 신경망 여러 개로 재탄생 : Truncated BPTT
 - 순전파는 유지한 채, 역전파의 연결만 끊음   ex.  1000개의 말뭉치에서 10개 단위로 자름  →  데이터의 '순서'를 유지한 채 입력해야 함 (이전 미니배치에서는 무작위로 샘플링)
 
-5**) Truncated BPTT의 미니배치 학습**
+**5) Truncated BPTT의 미니배치 학습**
 
 - 미니배치로 학습할 때는, 배치에 따라 시작점을 정해줘야함  ex. batch 1: 1~10 - 11~20  batch 2: 500~510 - 511~520
 
@@ -183,7 +183,7 @@ class RNN:
         
         $dh_{next} :$  한 시각 뒤(미래) 계층으로부터의 기울기
         
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8e9825ed-d6fa-4069-88e9-1de23706163d/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8e9825ed-d6fa-4069-88e9-1de23706163d/Untitled.png)
+        ![image2](./images/2.png)
         
     
     ```python
@@ -227,12 +227,12 @@ class RNN:
     
 - Example - 'you say goodbye and I say hello.'
     
-    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7fb13d92-f869-4989-bff2-dd71c251c588/fig_5-26.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7fb13d92-f869-4989-bff2-dd71c251c588/fig_5-26.png)
+    ![image3](./images/fig_5-26.png)
     
     RNN 계층은 'you say'라는 맥락을 기억하고 있음  → 이 과거 정보를 hidden state로 저장해두어 Affine계층과 다음 RNN계층에 전달
     
 
-2**) Time 계층 구현**
+**2) Time 계층 구현**
 
 - Embedding, RNN, Affine, Softmax  →  Time Embedding, Time RNN, Time Affine, Time Softmax
 - 시계열 데이터를 한번에 처리하는 계층으로 구현
@@ -297,7 +297,7 @@ class RNN:
     ```
     
 
-2**) 언어 모델의 평가**
+**2) 언어 모델의 평가**
 
 - Perplexity(혼란도): 언어 모델의 성능을 평가하는 척도
 - 혼란도 = 다음에 등장하는 단어 확률의 역수       ex.  you 다음 'say' 등장 확률 = 0.8  →  혼란도 = 1/0.8 = 1.25
@@ -306,7 +306,7 @@ class RNN:
 - 즉, 혼란도가 낮을수록 좋은 언어 모델이라고 평가할 수 있음!
 - 입력 데이터가 2개 이상일 경우, 마찬가지로 cross entropy error로 계산 →  e^L!
 
-3**) RNNLM의 학습 코드**
+**3) RNNLM의 학습 코드**
 
 - RNNLM - PTB 데이터셋 학습
     
@@ -381,6 +381,6 @@ class RNN:
     ```
     
 
-4**) RNNLM의 Trainer 클래스**
+**4) RNNLM의 Trainer 클래스**
 
 1. 미니배치를 순차적으로 구성 → 2. 모델의 forward와 backward 호출 → 3. Optimizer로 가중치 갱신 → 4. Perplexity를 통해 모델 평가
