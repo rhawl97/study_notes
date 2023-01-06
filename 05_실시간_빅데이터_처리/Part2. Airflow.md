@@ -38,7 +38,7 @@
     - multi node에서는 queue가 executor 바깥에 존재
 - 동작 방식
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9e0642cf-9c23-4094-8de5-10012e2a7fb2/Untitled.png)
+    ![Untitled](./images/5-2-1.png)
     
 - DAG의 생성과 실행
     1. 유저가 새로운 DAG를 작성 후 Folder DAGs 안에 배치
