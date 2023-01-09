@@ -194,4 +194,6 @@ docker-compose run airflow-worker airflow tasks test nft-pipeline store_nft 2023
 ```
 
 - **Backfill**
-    -
+    - 1day 주기인 파이프라인을 멈췄다가 며칠 뒤 실행시키면? → 멈춘 시점 or 실행한 시점?
+    - how to control it?
+        - DAG code 내 catchup option: catchup=True 일 경우, 멈춘 시점부터 스케줄링 되어 전부 실행
