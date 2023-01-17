@@ -24,7 +24,6 @@
 ---
 
 4. [김기현의 BERT, GPT-3를 활용한 자연어처리](https://fastcampus.co.kr/data_online_bertgpt3)
-- [책 링크](http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791162240601)
 - Transformer 개념, Language Model 이론
 - BERT 를 활용한 자연어 처리 실습
 - cookbook처럼 필요할 때 꺼내보기 좋은 책
