@@ -31,7 +31,7 @@
 
 ---
 
-5. [실시간 빅데이터 처리를 위한 Spark&Flink]
+5. [실시간 빅데이터 처리를 위한 Spark&Flink](https://fastcampus.co.kr/data_online_flink)
 - 아파치 스파크 개념 및 실습(Spark Cluster, SparkSQL, SparkML)
 - Airflow 파이프라인 실습 및 Spark 연동
 - 진행 중
