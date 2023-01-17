@@ -38,7 +38,7 @@
     - multi node에서는 queue가 executor 바깥에 존재
 - 동작 방식
     
-    ![Untitled](./images/5-2-1.png)
+    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9e0642cf-9c23-4094-8de5-10012e2a7fb2/Untitled.png)
     
 - DAG의 생성과 실행
     1. 유저가 새로운 DAG를 작성 후 Folder DAGs 안에 배치
@@ -120,7 +120,7 @@ with DAG(dag_id='nft-pipeline',
         schedule_interval = '@daily',
         default_args = default_args,
         tags = ['nft'],
-        catchup = False) as dag:
+        catchup = False) as dag:  # catchup: backfill 기능
   
   # 01. 테이블 생성
   creating_table = PostgresOperator(
@@ -197,3 +197,48 @@ docker-compose run airflow-worker airflow tasks test nft-pipeline store_nft 2023
     - 1day 주기인 파이프라인을 멈췄다가 며칠 뒤 실행시키면? → 멈춘 시점 or 실행한 시점?
     - how to control it?
         - DAG code 내 catchup option: catchup=True 일 경우, 멈춘 시점부터 스케줄링 되어 전부 실행
+
+## 3.3 Airflow와 Spark
+
+- Airflow에 Spark Provider 설치 필요
+    
+    ```bash
+    pip install apache-airflow-providers-apache-spark
+    
+    airflow webserver # port 8080 열어주기 
+    airflow scheduler # 스케줄러 실행
+    ```
+    
+- spark-submit을 통한 스파크 코드 테스트 (count_trips_sql.py)
+    
+    ```python
+    from datetime import datetime
+    from airflow import DAG
+    from airflow.providers.apache.spark.operators.spark_sql import SparkSqlOperator
+    from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+    
+    default_arg = {
+        'start_date': datetime(2021, 1,1)
+    }
+    
+    with DAG(dag_id="spark-example",
+            schedule_interval="@daily",
+            default_args=default_arg,
+            tags=['spark'],
+            catchup=False) as dag:
+    
+      # sql_job = SparkSqlOperator(sql="SELECT * from foobar", master='local', task_id='sql_job') # sql문, master 입력
+      ## 위 코드처럼 airflow안에서 헤비한 job을 하는 것은 비효율적 -> spark submit 
+      ## Airflow는 직접 sql을 실행하는 것이 아니라 submit만 해주고 뒤에서 실행되는지만 모니터링 : 헤비한 job은 spark에게!
+    
+      submit_job = SparkSubmitOperator(
+        application = "C:/Users/10590/Desktop/data-engineering/01-spark/count_trips_sql.py" # 실행할 spark code
+        task_id = "submit_job",
+        conn_id = "spark_local"  # webserver 내 configuration connection에 등록 
+        # connection type: Spark, Host: local, 클러스터일 경우 Host에 클러스터 정보 입력
+      )
+    ```
+    
+    ```python
+    airflow tasks test spark-example submit_job 2021-01-01  # dag id, task id
+    ```
